@@ -59,5 +59,10 @@
         "aliases": ["weekly"],
         "baseSeconds": 604800,
         "donorModifier": false
+    }, {
+        "name": "vote",
+        "aliases": ["vote"],
+        "baseSeconds": 43200,
+        "donorModifier": false
     }
 ]
