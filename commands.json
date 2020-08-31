@@ -1,0 +1,63 @@
+[
+    {
+        "name": "hunt",
+        "aliases": ["hunt", "hunt t", "hunt together", "hunt hardmode", "hunt h"],
+        "baseSeconds": 60,
+        "donorModifier": true
+    }, {
+        "name": "chop|fish|pickup",
+        "aliases": ["chop","fish","axe","net","pickup","ladder","mine","bowsaw","pickaxe","boat","tractor","chainsaw","bigboat","drill","greenhouse","dynamite"],
+        "baseSeconds": 300,
+        "donorModifier": true
+    }, {
+        "name": "training",
+        "aliases": ["training", "tr"],
+        "baseSeconds": 900,
+        "donorModifier": true
+    }, {
+        "name": "adventure",
+        "aliases": ["adventure", "adv", "adventure hardmode", "adv h"],
+        "baseSeconds": 3600,
+        "donorModifier": true
+    }, {
+        "name": "duel",
+        "aliases": ["duel"],
+        "baseSeconds": 7200,
+        "donorModifier": false
+    }, {
+        "name": "guild raid|upgrade",
+        "aliases": ["guild raid", "guild upgrade"],
+        "baseSeconds": 7200,
+        "donorModifier": false
+    }, {
+        "name": "lootbox",
+        "aliases": ["buy common lootbox", "buy uncommon lootbox", "buy rare lootbox", "buy epic lootbox", "buy edgy lootbox"],
+        "baseSeconds": 10800,
+        "donorModifier": false
+    }, {
+        "name": "quest",
+        "aliases": ["quest", "epic quest"],
+        "baseSeconds": 10800,
+        "donorModifier": true
+    }, {
+        "name": "dungeon/miniboss",
+        "aliases": ["dungeon","miniboss","notsominiboss"],
+        "baseSeconds": 43200,
+        "donorModifier": true
+    }, {
+        "name": "arena",
+        "aliases": ["arena"],
+        "baseSeconds": 86400,
+        "donorModifier": true
+    }, {
+        "name": "daily",
+        "aliases": ["daily"],
+        "baseSeconds": 86400,
+        "donorModifier": false
+    }, {
+        "name": "weekly",
+        "aliases": ["weekly"],
+        "baseSeconds": 604800,
+        "donorModifier": false
+    }
+]
