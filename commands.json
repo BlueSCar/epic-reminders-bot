@@ -31,7 +31,7 @@
         "donorModifier": false
     }, {
         "name": "lootbox",
-        "aliases": ["buy common lootbox", "buy uncommon lootbox", "buy rare lootbox", "buy epic lootbox", "buy edgy lootbox"],
+        "aliases": ["buy common lootbox", "buy uncommon lootbox", "buy rare lootbox", "buy epic lootbox", "buy edgy lootbox", "buy ed lb", "buy common lb", "buy uncommon lb", "buy rare lb", "buy epic lb", "buy edgy lb"],
         "baseSeconds": 10800,
         "donorModifier": false
     }, {

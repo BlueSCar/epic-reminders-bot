@@ -24,7 +24,7 @@ const { CronJob, job } = require('cron');
         }
     }
 
-    const commandFormat = /^rpg (\w+)/;
+    const commandFormat = /^rpg ([\w\s]+)/;
 
     const client = new Discord.Client();
 
