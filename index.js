@@ -118,7 +118,7 @@ const { CronJob, job } = require('cron');
                 member.bonuses.splice(member.bonuses.indexOf(0.65));
             }
 
-            if (!member.bonuses || member.bonus.length === 0) {
+            if (!member.bonuses || member.bonuses.length === 0) {
                 for (let cd of member.cooldowns) {
                     cd.nextUp = null;
                 }
