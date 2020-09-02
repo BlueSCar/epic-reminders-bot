@@ -25,6 +25,7 @@ const { CronJob, job } = require('cron');
     }
 
     const commandFormat = /^rpg ([\w\s]+)/;
+    const petCommandFormat = /^rpg (pets? adv(?:enture)? \w drill)/;
 
     const client = new Discord.Client();
 
@@ -50,6 +51,13 @@ const { CronJob, job } = require('cron');
                     } else {
                         memberCommand.nextUp = date;
                     }
+                }
+
+                if (petCommandFormat.test(cleaned)) {
+                    member.cooldowns.push({
+                        name: results[1],
+                        nextUp: new Date(msg.createdTimestamp + 14400)
+                    });
                 }
             }
         }
@@ -169,7 +177,7 @@ const { CronJob, job } = require('cron');
                 }
             }
         });
-        job.start()
+        job.start();
     });
 })().catch(err => {
     console.error(err);
