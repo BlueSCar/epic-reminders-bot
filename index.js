@@ -179,7 +179,7 @@ const { CronJob, job } = require('cron');
         });
         job.start();
 
-        const job2 = new CronJob('0 * * * * *', () => {
+        const job2 = new CronJob('59 * * * * *', () => {
             fs.writeFileSync('./config.json', JSON.stringify(config, null, '\t'));
         });
         job2.start();
