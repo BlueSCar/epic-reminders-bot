@@ -56,7 +56,7 @@ const { CronJob, job } = require('cron');
                 if (petCommandFormat.test(cleaned)) {
                     member.cooldowns.push({
                         name: results[1],
-                        nextUp: new Date(msg.createdTimestamp + 14400)
+                        nextUp: new Date(msg.createdTimestamp + 14400000)
                     });
                 }
             }
@@ -179,9 +179,9 @@ const { CronJob, job } = require('cron');
         });
         job.start();
 
-        const job2 = new (CronJob('0 * * * * *', () => {
+        const job2 = new CronJob('0 * * * * *', () => {
             fs.writeFileSync('./config.json', JSON.stringify(config, null, '\t'));
-        }));
+        });
         job2.start();
     });
 })().catch(err => {
