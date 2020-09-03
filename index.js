@@ -8,6 +8,7 @@ const { CronJob, job } = require('cron');
 
     const commandChannelId = process.env.COMMAND_CHANNEL_ID;
     const reactionChannelId = process.env.REACTIONS_CHANNEL_ID;
+    const playerRoleId = process.env.PLAYER_ROLE_ID;
     const adminId = process.env.ADMIN_ID;
 
     let commandChannel, reactionChannel;
@@ -29,7 +30,7 @@ const { CronJob, job } = require('cron');
 
     const client = new Discord.Client();
 
-    client.on('message', msg => {
+    client.on('message', async msg => {
         let member = config.members.find(m => m.id === msg.author.id);
         if (msg.channel.id === commandChannelId && member && member.bonuses && member.bonuses.length) {
             const cleaned = msg.content.toLowerCase().trim();
@@ -59,6 +60,18 @@ const { CronJob, job } = require('cron');
                         nextUp: new Date(msg.createdTimestamp + 14400000)
                     });
                 }
+            }
+        } else if (msg.embeds && msg.embeds.length && msg.embeds[0].fields && msg.embeds[0].fields.length && msg.author.id === 555955826880413696) {
+            let content = msg.embeds[0].fields[0].name;
+
+            if (content.indexOf(`AN EPIC TREE HAS JUST GROWN`) !== -1) {
+                await msg.reply(`<@&${playerRoleId}> CHOP`);
+            } else if (content.indexOf(`IT'S RAINING COINS`) !== -1) {
+                await msg.reply(`<@&${playerRoleId}> CATCH`);
+            } else if (content.indexOf(`A MEGALODON HAS SPAWNED IN THE RIVER`) !== -1) {
+                await msg.reply(`<@&${playerRoleId}> FISH`);
+            } else if (content.indexOf(`A LEGENDARY BOSS JUST SPAWNED`) !== -1) {
+                await msg.reply(`<@&${playerRoleId}> TIME TO FIGHT`);
             }
         }
         
