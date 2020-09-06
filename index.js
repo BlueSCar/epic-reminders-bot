@@ -61,7 +61,7 @@ const { CronJob, job } = require('cron');
                     });
                 }
             }
-        } else if (msg.embeds && msg.embeds.length && msg.embeds[0].fields && msg.embeds[0].fields.length && msg.author.id === 555955826880413696) {
+        } else if (msg.embeds && msg.embeds.length && msg.embeds[0].fields && msg.embeds[0].fields.length && msg.author.id == 555955826880413696) {
             let content = msg.embeds[0].fields[0].name;
 
             if (content.indexOf(`AN EPIC TREE HAS JUST GROWN`) !== -1) {
