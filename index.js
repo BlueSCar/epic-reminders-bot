@@ -65,13 +65,13 @@ const { CronJob, job } = require('cron');
             let content = msg.embeds[0].fields[0].name;
 
             if (content.indexOf(`AN EPIC TREE HAS JUST GROWN`) !== -1) {
-                await msg.reply(`<@&${playerRoleId}> CHOP`);
+                await commandChannel.send(`<@&${playerRoleId}> CHOP`);
             } else if (content.indexOf(`IT'S RAINING COINS`) !== -1) {
-                await msg.reply(`<@&${playerRoleId}> CATCH`);
+                await commandChannel.send(`<@&${playerRoleId}> CATCH`);
             } else if (content.indexOf(`A MEGALODON HAS SPAWNED IN THE RIVER`) !== -1) {
-                await msg.reply(`<@&${playerRoleId}> FISH`);
+                await commandChannel.send(`<@&${playerRoleId}> FISH`);
             } else if (content.indexOf(`A LEGENDARY BOSS JUST SPAWNED`) !== -1) {
-                await msg.reply(`<@&${playerRoleId}> TIME TO FIGHT`);
+                await commandChannel.send(`<@&${playerRoleId}> TIME TO FIGHT`);
             }
         }
         
