@@ -27,6 +27,7 @@ const { CronJob, job } = require('cron');
 
     const commandFormat = /^rpg ([\w\s]+)/;
     const petCommandFormat = /^rpg (pets? adv(?:enture)? \w drill)/;
+    const snoozeCommandFormat = /^rpg snooze ([\d\.]+)([w,d,h,m,s])/;
 
     const client = new Discord.Client();
 
@@ -52,6 +53,9 @@ const { CronJob, job } = require('cron');
                     } else {
                         memberCommand.nextUp = date;
                     }
+                } else if (results[1] === 'unsnooze') {
+                    member.snoozeUntil = null;
+                    await msg.reply('Snooze has been dismissed');
                 }
 
                 if (petCommandFormat.test(cleaned)) {
@@ -59,6 +63,26 @@ const { CronJob, job } = require('cron');
                         name: results[1],
                         nextUp: new Date(msg.createdTimestamp + 14400000)
                     });
+                }
+
+                let snoozeResults = snoozeCommandFormat.exec(cleaned);
+                if (snoozeResults && snoozeResults.length && snoozeResults.length === 3) {
+                    let interval = snoozeResults[1];
+                    let unit = snoozeResults[2];
+
+                    if (unit === 's') {
+                        member.snoozeUntil = new Date(msg.createdTimestamp + (interval * 1000));
+                    } else if (unit === 'm') {
+                        member.snoozeUntil = new Date(msg.createdTimestamp + (interval * 60 * 1000));
+                    } else if (unit === 'h') {
+                        member.snoozeUntil = new Date(msg.createdTimestamp + (interval * 60 * 60 * 1000));
+                    } else if (unit === 'd') {
+                        member.snoozeUntil = new Date(msg.createdTimestamp + (interval * 24 * 60 * 60 * 1000));
+                    } else if (unit === 'w') {
+                        member.snoozeUntil = new Date(msg.createdTimestamp + (interval * 7 * 24 * 60 * 60 * 1000));
+                    }
+
+                    await msg.reply(`Notifications will be snoozed until ${member.snoozeUntil.toUTCString()}`);
                 }
             }
         } else if (msg.embeds && msg.embeds.length && msg.embeds[0].fields && msg.embeds[0].fields.length && msg.author.id == 555955826880413696) {
@@ -74,7 +98,7 @@ const { CronJob, job } = require('cron');
                 await commandChannel.send(`<@&${playerRoleId}> TIME TO FIGHT`);
             }
         }
-        
+
         if (msg.channel.id === commandChannelId && msg.author.id == adminId) {
             const cleaned = msg.content.toLowerCase().trim();
             const results = commandFormat.exec(cleaned);
@@ -82,6 +106,7 @@ const { CronJob, job } = require('cron');
             if (results && results.length > 1) {
                 if (results[1] === 'dump') {
                     fs.writeFileSync('./config.json', JSON.stringify(config, null, '\t'));
+                    await msg.reply('current state saved');
                 }
             }
         }
@@ -182,11 +207,32 @@ const { CronJob, job } = require('cron');
         const job = new CronJob('* * * * * *', async () => {
             const now = new Date();
             for (let member of config.members) {
-                for (let cooldown of member.cooldowns) {
-                    if (cooldown.nextUp && now >= new Date(cooldown.nextUp)) {
-                        cooldown.nextUp = null;
-                        await commandChannel.send(`<@${member.id}> rpg ${cooldown.name}`);
+                if (!member.snoozeUntil) {
+                    for (let cooldown of member.cooldowns) {
+                        if (cooldown.nextUp && now >= new Date(cooldown.nextUp)) {
+                            cooldown.nextUp = null;
+                            await commandChannel.send(`<@${member.id}> rpg ${cooldown.name}`);
+                        }
                     }
+                } else if (member.snoozeUntil && new Date(member.snoozeUntil) <= now) {
+                    let cds = [];
+                    for (let cooldown of member.cooldowns) {
+                        if (cooldown.nextUp && now >= new Date(cooldown.nextUp)) {
+                            cooldown.nextUp = null;
+                            cds.push(cooldown.name);
+                        }
+                    }
+
+                    const embed = new Discord.MessageEmbed()
+                                            .setTitle(`Snooze Expiration for ${member.username}`)
+                                            .setColor(0x03bafc)
+                                            .setDescription(`
+                                <@${member.id}> The following commands came due while you were snoozed:
+                                ${cds.join(`\r\n`)}
+                                                            `);
+
+                    await commandChannel.send(embed);
+                    member.snoozeUntil = null;
                 }
             }
         });
