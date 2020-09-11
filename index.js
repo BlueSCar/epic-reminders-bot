@@ -54,8 +54,26 @@ const { CronJob, job } = require('cron');
                         memberCommand.nextUp = date;
                     }
                 } else if (results[1] === 'unsnooze') {
+                    const now = new Date();
+                    let cds = [];
+                    for (let cooldown of member.cooldowns) {
+                        if (cooldown.nextUp && now >= new Date(cooldown.nextUp)) {
+                            cooldown.nextUp = null;
+                            cds.push(cooldown.name);
+                        }
+                    }
+
+                    const embed = new Discord.MessageEmbed()
+                                            .setTitle(`Snooze Dismissed for ${member.username}`)
+                                            .setColor(0x03bafc)
+                                            .setDescription(`
+                                <@${member.id}> The following commands came due while you were snoozed:
+
+                                ${cds.join(`\r\n`)}
+                                                            `);
+
+                    await commandChannel.send(embed);
                     member.snoozeUntil = null;
-                    await msg.reply('Snooze has been dismissed');
                 }
 
                 if (petCommandFormat.test(cleaned)) {
@@ -228,6 +246,7 @@ const { CronJob, job } = require('cron');
                                             .setColor(0x03bafc)
                                             .setDescription(`
                                 <@${member.id}> The following commands came due while you were snoozed:
+                                
                                 ${cds.join(`\r\n`)}
                                                             `);
 
