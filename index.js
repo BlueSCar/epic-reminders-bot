@@ -17,7 +17,7 @@ const { CronJob, job } = require('cron');
         members: []
     };
 
-    for (let member of config.members) {
+    for (let member of config.members.filter(m => !m.snoozeUntil)) {
         for (let cooldown of member.cooldowns) {
             if (cooldown.nextUp && new Date() >= new Date(cooldown.nextUp)) {
                 cooldown.nextUp = null;
@@ -64,9 +64,9 @@ const { CronJob, job } = require('cron');
                     }
 
                     const embed = new Discord.MessageEmbed()
-                                            .setTitle(`Snooze Dismissed for ${member.username}`)
-                                            .setColor(0x03bafc)
-                                            .setDescription(`
+                        .setTitle(`Snooze Dismissed for ${member.username}`)
+                        .setColor(0x03bafc)
+                        .setDescription(`
                                 <@${member.id}> The following commands came due while you were snoozed:
 
                                 ${cds.join(`\r\n`)}
@@ -77,10 +77,15 @@ const { CronJob, job } = require('cron');
                 }
 
                 if (petCommandFormat.test(cleaned)) {
-                    member.cooldowns.push({
-                        name: results[1],
-                        nextUp: new Date(msg.createdTimestamp + 14400000)
-                    });
+                    let petCommand = member.cooldowns.find(cd => cd.name == results[1]);
+                    if (petCommand) {
+                        petCommand.nextUp = new Date(msg.createdTimestamp + 14400000);
+                    } else {
+                        member.cooldowns.push({
+                            name: results[1],
+                            nextUp: new Date(msg.createdTimestamp + 14400000)
+                        });
+                    }
                 }
 
                 let snoozeResults = snoozeCommandFormat.exec(cleaned);
@@ -225,6 +230,8 @@ const { CronJob, job } = require('cron');
         const job = new CronJob('* * * * * *', async () => {
             const now = new Date();
             for (let member of config.members) {
+                member.cooldowns = member.cooldowns.filter(cd => cd.nextUp);
+
                 if (!member.snoozeUntil) {
                     for (let cooldown of member.cooldowns) {
                         if (cooldown.nextUp && now >= new Date(cooldown.nextUp)) {
@@ -242,11 +249,11 @@ const { CronJob, job } = require('cron');
                     }
 
                     const embed = new Discord.MessageEmbed()
-                                            .setTitle(`Snooze Expiration for ${member.username}`)
-                                            .setColor(0x03bafc)
-                                            .setDescription(`
+                        .setTitle(`Snooze Expiration for ${member.username}`)
+                        .setColor(0x03bafc)
+                        .setDescription(`
                                 <@${member.id}> The following commands came due while you were snoozed:
-                                
+
                                 ${cds.join(`\r\n`)}
                                                             `);
 
