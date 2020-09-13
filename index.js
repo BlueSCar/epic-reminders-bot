@@ -59,20 +59,11 @@ const { CronJob, job } = require('cron');
                     for (let cooldown of member.cooldowns) {
                         if (cooldown.nextUp && now >= new Date(cooldown.nextUp)) {
                             cooldown.nextUp = null;
-                            cds.push(cooldown.name);
+                            cds.push(`**${cooldown.name}**`);
                         }
                     }
 
-                    const embed = new Discord.MessageEmbed()
-                        .setTitle(`Snooze Dismissed for ${member.username}`)
-                        .setColor(0x03bafc)
-                        .setDescription(`
-                                <@${member.id}> The following commands came due while you were snoozed:
-
-                                ${cds.join(`\r\n`)}
-                                                            `);
-
-                    await commandChannel.send(embed);
+                    await commandChannel.send(`<@${member.id}>'s snooze has been dismissed. The following commands came due while you were snoozed:\r\n\r\n${cds.join(`\r\n`)}`);
                     member.snoozeUntil = null;
                 }
 
@@ -244,21 +235,12 @@ const { CronJob, job } = require('cron');
                     for (let cooldown of member.cooldowns) {
                         if (cooldown.nextUp && now >= new Date(cooldown.nextUp)) {
                             cooldown.nextUp = null;
-                            cds.push(cooldown.name);
+                            cds.push(`**${cooldown.name}**`);
                         }
                     }
 
-                    const embed = new Discord.MessageEmbed()
-                        .setTitle(`Snooze Expiration for ${member.username}`)
-                        .setColor(0x03bafc)
-                        .setDescription(`
-                                <@${member.id}> The following commands came due while you were snoozed:
-
-                                ${cds.join(`\r\n`)}
-                                                            `);
-
-                    await commandChannel.send(embed);
                     member.snoozeUntil = null;
+                    await commandChannel.send(`<@${member.id}>'s snooze has expired. The following commands came due while you were snoozed:\r\n\r\n${cds.join(`\r\n`)}`);
                 }
             }
         });
