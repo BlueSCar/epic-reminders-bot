@@ -228,7 +228,7 @@ const { CronJob, job } = require('cron');
                         if (cooldown.nextUp && now >= new Date(cooldown.nextUp)) {
                             cooldown.nextUp = null;
 
-                            let tagId =  cooldown.name == 'guild raid|upgrade' ? playerRoleId : member.id;
+                            let tagId =  cooldown.name == 'guild raid|upgrade' ? `&${playerRoleId}` : `${member.id}`;
                             await commandChannel.send(`<@${tagId}> rpg ${cooldown.name}`);
                         }
                     }
