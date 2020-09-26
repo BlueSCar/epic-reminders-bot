@@ -45,7 +45,10 @@ const { CronJob, job } = require('cron');
                     let date = new Date(msg.createdTimestamp + seconds);
 
                     let memberCommand = member.cooldowns.find(c => c.name == command.name);
-                    if (!memberCommand) {
+
+                    if (command.name === 'guild raid|upgrade') {
+                        config.guildCooldown = date;
+                    } else if (!memberCommand) {
                         member.cooldowns.push({
                             name: command.name,
                             nextUp: date
@@ -220,6 +223,12 @@ const { CronJob, job } = require('cron');
 
         const job = new CronJob('* * * * * *', async () => {
             const now = new Date();
+
+            if (config.guildCooldown && new Date(config.guildCooldown) <= now) {
+                config.guildCooldown = null;
+                await commandChannel.send(`<@&${playerRoleId}> rpg guild raid|upgrade`);
+            }
+
             for (let member of config.members) {
                 member.cooldowns = member.cooldowns.filter(cd => cd.nextUp);
 
@@ -252,6 +261,12 @@ const { CronJob, job } = require('cron');
             fs.writeFileSync('./config.json', JSON.stringify(config, null, '\t'));
         });
         job2.start();
+
+        const job3 = new CronJob('30 0 22 * * 6', () => {
+            config.guildCooldown = null;
+            await commandChannel.send(`<@&${playerRoleId}> GUILD RESET`);
+        });
+        job3.start();
     });
 })().catch(err => {
     console.error(err);
