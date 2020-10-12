@@ -26,7 +26,7 @@ const { CronJob, job } = require('cron');
     }
 
     const commandFormat = /^rpg ([\w\s]+)/;
-    const petCommandFormat = /^rpg (pets? adv(?:enture)? \w drill)/;
+    const petCommandFormat = /^rpg (pets? adv(?:enture)? \w (?:drill|learn|dig))/;
     const snoozeCommandFormat = /^rpg snooze ([\d\.]+)([w,d,h,m,s])/;
 
     const client = new Discord.Client();
