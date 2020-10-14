@@ -11,7 +11,7 @@
         "donorModifier": true
     }, {
         "name": "training",
-        "aliases": ["training", "tr"],
+        "aliases": ["training", "tr", "ultraining", "ultr"],
         "baseSeconds": 900,
         "donorModifier": true
     }, {
