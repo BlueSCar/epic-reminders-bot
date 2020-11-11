@@ -262,7 +262,7 @@ const { CronJob, job } = require('cron');
         });
         job2.start();
 
-        const job3 = new CronJob('30 0 22 * * 6', async () => {
+        const job3 = new CronJob('30 0 21 * * 6', async () => {
             config.guildCooldown = null;
             await commandChannel.send(`<@&${playerRoleId}> GUILD RESET`);
         });

@@ -12,7 +12,7 @@
     }, {
         "name": "training",
         "aliases": ["training", "tr", "ultraining", "ultr"],
-        "baseSeconds": 900,
+        "baseSeconds": 905,
         "donorModifier": true
     }, {
         "name": "adventure",
@@ -62,7 +62,7 @@
     }, {
         "name": "vote",
         "aliases": ["vote"],
-        "baseSeconds": 43200,
+        "baseSeconds": 43210,
         "donorModifier": false
     }
 ]
