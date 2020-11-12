@@ -1,7 +1,7 @@
 [
     {
         "name": "hunt",
-        "aliases": ["hunt", "hunt t", "hunt together", "hunt hardmode", "hunt h"],
+        "aliases": ["hunt", "hunt t", "hunt together", "hunt hardmode", "hunt h", "hunt h t", "hunt hardmode together"],
         "baseSeconds": 60,
         "donorModifier": true
     }, {
