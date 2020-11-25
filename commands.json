@@ -38,7 +38,7 @@
         "name": "quest",
         "aliases": ["quest", "epic quest"],
         "baseSeconds": 21600,
-        "donorModifier": false
+        "donorModifier": true
     }, {
         "name": "dungeon/miniboss",
         "aliases": ["dungeon","miniboss","notsominiboss"],
